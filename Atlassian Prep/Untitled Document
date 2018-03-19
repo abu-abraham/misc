@@ -1,0 +1,166 @@
+def answer(n, elements):
+    value_map = {}
+    for element in elements:
+        binaryFormat =  "{0:b}".format(element)
+        value_map.setdefault(binaryFormat.count('1'), []).append(element);
+    #max_values_list = value_map[max(value_map.iterkeys())] --To get the largest key
+    sorted_keys = value_map.keys()
+    sorted_keys.sort()
+    retun_list = []
+    for k in sorted_keys:
+        values = value_map[k]
+        values.sort()
+        retun_list+=values
+    print retun_list
+
+
+answer(5,[5,3,7,10,14]);
+
+#Array, find degree which is maximum count of repeating integers. Then find subarray starting and ending in max count - Then return min subarray size
+
+def answer(n, elements):
+    value_map = {}
+    key_map = {}
+    best = 2;
+    for index, element in enumerate(elements):
+        value_map.setdefault(element, []).append(index);
+        if len(value_map[element]) >= best:
+            key_map.setdefault(len(value_map[element]),[]).append(element);
+            best = len(value_map[element])
+    #sorted_value_map = sorted(value_map.iteritems(), key=lambda (k,v): (v,k));
+    #print sorted_value_map
+    if(len(key_map) == 0):
+        return 1;
+    max_rep = key_map.get(key_map.keys()[len(key_map)-1])
+    sub_array_length = []
+    for item in max_rep:
+        sub_array_length.append(max(value_map[item]) - min(value_map[item])+1)
+    return min(sub_array_length)
+
+
+
+print answer(6,[1,1,2,1,2,2]);
+
+value_map = {}
+
+def removeElement(item):
+    value_map.pop(item,0);
+
+def answer(n, elements):
+    for element in elements:
+        if element in value_map:
+            value_map[element] = value_map[element]+element
+        else:
+            value_map[element]= element
+    sorted_list = sorted(value_map.items(), key=lambda x: x[1],reverse=True)
+    score = 0
+    for item in sorted_list:
+        if item[0] in value_map:
+            score += item[1]
+            removeElement(item[0]-1)
+            removeElement(item[0]+1)
+            
+
+    return score
+
+
+
+
+print answer(3,[3,4,2]);
+
+
+
+def answer(n, elements):
+    A = [0]*(n+1)
+    for i in range(0,len(elements)-1):
+        for j in range(min(elements[i],elements[i+1]),max(elements[i],elements[i+1])+1):
+            A[j]+=1;
+    return A.index(max(A)) 
+
+def answer1(n,elements):
+    B = [0]*(n+2)
+    for i in range(0,len(elements)-1):
+        if elements[i] < elements[i+1]:
+            B[elements[i]]+=1;
+            B[elements[i+1]+1]-=1;
+        else:
+            B[elements[i]+1]-=1;
+            B[elements[i+1]]+=1;
+    max_val = 0
+    max_indexes = []
+    for i in range(1,len(B)):
+        B[i]+=B[i-1]
+        if B[i] >max_val:
+            max_val = B[i]
+            max_indexes = []
+            max_indexes.append(i);
+        elif B[i]==max_val:
+            max_indexes.append(i);
+    return min(max_indexes)
+            
+
+print answer1(10,[1,5,10,3]);
+
+
+import math
+
+
+threshold = 0
+
+
+def getDivisors(n) :
+    i =1;
+    divisors = []
+    while i <= math.sqrt(n):
+        if (n % i == 0) :
+            if (n / i == i) :
+                divisors.append(i)
+            else :
+                divisors.append(i)
+                divisors.append(n/i)
+        i = i + 1
+    divisors = [i for i in divisors if i>threshold]
+    return divisors
+
+def bfs(val_map,start):
+    visited, queue = set(), [start]
+    while queue:
+        vertex = queue.pop(0)
+        if vertex not in visited:
+            visited.add(vertex)
+            queue.extend(val_map[vertex] - visited)
+    return list(visited)
+
+def answer(originList,destination):
+    n = 7
+    value_map ={}
+    total_list = originList+destination
+    total_list = list(set(total_list))
+    for item in total_list:
+        if item > threshold: 
+            org_facors = getDivisors(item)
+            for dest in total_list:
+                if dest > threshold and dest != item:
+                    dest_factors = getDivisors(dest)
+                    common = list(set(org_facors) & set(dest_factors))
+                    if len(common)>0:
+                        value_map.setdefault(item,[]).append(dest)
+    for key in value_map:
+        value_map[key]=set(value_map[key])
+    dest_list = []
+    for index, org in enumerate(originList):
+        if org in value_map:
+            if destination[index] in bfs(value_map,org):
+                dest_list.append(1)
+        else:
+            dest_list.append(0)
+    print dest_list
+        
+
+
+
+print answer([1,4,3,6],[3,6,2,5])
+
+
+
+
