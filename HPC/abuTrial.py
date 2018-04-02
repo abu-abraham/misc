@@ -1,33 +1,71 @@
+import ctypes
+import numpy
 import sys
-import numpy as np
-import math
 
-N = 2
-total_molecules = N*N*N
-molecules = np.ones(total_molecules)
-molecules = molecules.reshape([N,N,N])
-initial_potential = 0
-print "Atoms are at "
-x = []
-for i in range(0,N):
-    for j in range(0,N):
-        for k in range(0,N):
-            print str(i)+" "+str(j)+" "+str(k)
-            x.append([i,j,k]);
+def working_example():
+    testlib = ctypes.cdll.LoadLibrary('./abuTrialC.so')
 
-def distance(x1,y1,z1,x2,y2,z2):
-    return math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2))+((z1-z2)*(z1-z2)))
+    n=5
+    outa = numpy.zeros(n,numpy.float)
+    ina = numpy.linspace(1.0,200.0,n)
 
-def find_distance(node):
-    #print "Distances from "+str(xi)+" "+str(xj)+" "+str(xk);
-    sum = 0;
-    for item in x:
-        if item != node:
-            sum+=distance(node[0],node[1],node[2],item[0],item[1],item[2])
+    print "initial array",ina
+    testlib.square_array.restype = None
+    testlib.square_array(ctypes.c_int(n),
+                        numpy.ctypeslib.as_ctypes(ina),
+                        numpy.ctypeslib.as_ctypes(outa))
+    print "final array",outa
 
-    return sum;
+def my_attempt():
+    testlib = ctypes.cdll.LoadLibrary('./abuTrialC.so')
+
+    n=5
+    outa = numpy.zeros(n)
+    ina = numpy.linspace(1.0,200.0,n)
+
+    print "initial array",ina
+    testlib.square_array.restype = None
+    testlib.square_array(ctypes.c_int(n),
+                        numpy.ctypeslib.as_ctypes(ina),
+                        numpy.ctypeslib.as_ctypes(outa))
+    print "final array",outa
 
 
-for node in x: 
-    print find_distance(node);
+#my_attempt()
 
+count = 5
+size = 3
+
+#create some arrays
+arrays = [numpy.arange(size,dtype="float32") for ii in range(count)]
+arrays = numpy.array([[1,2,3],[0,0,0],[1,1,1],[2,2,2],[3,1,1]],dtype="float32") 
+print arrays
+
+
+#get ctypes handles
+ctypes_arrays = [numpy.ctypeslib.as_ctypes(array) for array in arrays]
+
+#Pack into pointer array
+pointer_ar = (ctypes.POINTER(ctypes.c_float) * count)(*ctypes_arrays)
+
+print arrays
+
+ctypes.CDLL("./libfoo.so").foo(ctypes.c_int(count),4, pointer_ar, ctypes.c_int(size))
+
+print arrays
+
+# import sys
+# import numpy as np
+# import math
+
+# # from subprocess import check_output
+# # x = check_output('./compute', shell=True)
+# # print x
+
+
+# import subprocess
+
+# p = subprocess.Popen('./compute 1 2 3 4 5 6', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+# for line in p.stdout.readlines():
+#     print str(line)
+# retval = p.wait()

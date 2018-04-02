@@ -11,10 +11,6 @@ class Utils:
 
     def distance(self,x1,y1,z1,x2,y2,z2):
         x = math.sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2))+((z1-z2)*(z1-z2)))
-        # a = np.array([x1,y1,z1])
-        # b = np.array([x2,y2,z2])
-        # y =  np.linalg.norm(a-b)
-        # print str(x)+"   "+str(y)
         return x
 
 class Program(Thread):
@@ -41,23 +37,29 @@ class Program(Thread):
                 for k in range(0,N):
                     self.atoms.append([i*dimensionality_factor,j*dimensionality_factor,k*dimensionality_factor])
         
-        
-
-
-    def find_potential(self,node):
-        #print "Distances from "+str(xi)+" "+str(xj)+" "+str(xk);
-        sum = 0
-        for item in self.atoms:
-            if item != node:
+    
+    def find_potential(self,node,index):
+        isum = 0
+        for i,item in enumerate(self.atoms):
+            if i<index:
                 r_ij=self.utils.distance(node[0],node[1],node[2],item[0],item[1],item[2])
-                sum+=1/r_ij**12-2/r_ij**6
+                isum=isum+(1/pow(r_ij,12)-2/pow(r_ij,6))
+        return isum
 
-        return sum
+    def print_attributes(self):
+        print ("Dimension of cube: "+str(N))
+        print ("Total no of atoms: "+str(self.total_molecules))
+        print "Integration time step: "+str(self.tstep)
+        print "Number of steps: "+str(iter)
+        print "TIME           Total                    Kinetic                   Potential"
+        print "========================================================================================"
+        
 
     def get_potential_energy(self):
         sum = 0
-        for node in self.atoms:
-            sum+=self.find_potential(node)
+        for index,node in enumerate(self.atoms):
+            s=self.find_potential(node,index)
+            sum = sum+s
         return sum
 
     def initialize_lists(self):
@@ -73,24 +75,26 @@ class Program(Thread):
         for item in self.atoms:
             if not item == node:
                 rij = self.utils.distance(node[0],node[1],node[2],item[0],item[1],item[2])
-                const_quantity = (((12/rij)**14)-((12/rij)**8))
+                const_quantity = 12/pow(rij,14)-12/pow(rij,8)
                 Fx+=const_quantity*(node[0]-item[0])
                 Fy+=const_quantity*(node[1]-item[1])
                 Fz+=const_quantity*(node[2]-item[2])
+        print Fx
         return Fx,Fy,Fz
 
     def update_coordinates(self):
-        for i,node in enumerate(self.atoms):
-            new_acceleration = list(self.force_cordinates(node))
-            node[0] = node[0]+self.tstep*(self.velocity[i][0]+(self.tstep*self.acceleration[i][0])/2)
-            node[1] = node[1]+self.tstep*(self.velocity[i][1]+(self.tstep*self.acceleration[i][1])/2)
-            node[2] = node[2]+self.tstep*(self.velocity[i][2]+(self.tstep*self.acceleration[i][2])/2)
+        z = np.copy(self.atoms)
+        for i in range(0,len(self.atoms)):
+            new_acceleration = list(self.force_cordinates(self.atoms[i]))
+            self.atoms[i][0]= (self.atoms[i][0]+self.tstep*(self.velocity[i][0]+(self.tstep*self.acceleration[i][0])/2))
+            self.atoms[i][1]=(self.atoms[i][1]+self.tstep*(self.velocity[i][1]+(self.tstep*self.acceleration[i][1])/2))
+            self.atoms[i][2]=(self.atoms[i][2]+self.tstep*(self.velocity[i][2]+(self.tstep*self.acceleration[i][2])/2))
 
             self.velocity[i][0] = self.velocity[i][0] + self.tstep*(self.acceleration[i][0]+new_acceleration[0])/2
             self.velocity[i][1] = self.velocity[i][1] + self.tstep*(self.acceleration[i][1]+new_acceleration[1])/2
             self.velocity[i][2] = self.velocity[i][2] + self.tstep*(self.acceleration[i][2]+new_acceleration[2])/2
-
             self.acceleration[i] = new_acceleration
+        
 
     def total_kinetic_energy(self):
         sum = 0
@@ -103,36 +107,22 @@ class Program(Thread):
     def run(self):
         ji = 0
         self.initialize_lists()
-        prevKin = 0
-        test = False
-        while not self.stopped.wait(float(tstep)):
-            print("At time step ")+str(ji)
+        self.print_attributes();
+        t_step=0.000
+        while not self.stopped.wait(float(tstep)):           
             kin = self.total_kinetic_energy()
             pot = self.get_potential_energy()
             tot = kin + pot
-            print str(kin)+"         "+str(pot)+"         "+str(tot)
-            print self.atoms[0]
-            if (test):
-                if pot > kin:
-                    print "Potential energy is greater"
-                else:
-                    print "Kinetic energy is greater"
-                
-                if prevKin > kin:
-                    print "Previous kinetic energy is greater"
-                else:
-                    print "Present kinetic energy is greater"
-
-                prevKin = kin
-            self.update_coordinates()
+            print '%f       %.6e             %.6e            %.6e' %(t_step,tot,kin,pot)         
             ji+=1
+            t_step+=self.tstep
+            self.update_coordinates()
             if (ji>=int(iter)):
                 stopFlag.set()
-            # call a function
 
 
 if len(sys.argv)<5:
-    print "Enter 4 arguments"
+    print ("Enter 4 arguments")
     sys.exit()
 utils = Utils()
 N, R, tstep, iter = utils.get_values(sys.argv)
