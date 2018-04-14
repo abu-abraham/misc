@@ -54,10 +54,10 @@ class Program(Thread):
     def print_attributes(self):
         print ("Dimension of cube: "+str(N))
         print ("Total no of atoms: "+str(self.total_molecules))
-        print "Integration time step: "+str(self.tstep)
-        print "Number of steps: "+str(iter)
-        print "TIME           Total                    Kinetic                   Potential"
-        print "========================================================================================"
+        print ("Integration time step: "+str(self.tstep))
+        print ("Number of steps: "+str(iter))
+        print ("TIME           Total                    Kinetic                   Potential")
+        print ("========================================================================================")
         
 
 
@@ -79,7 +79,7 @@ class Program(Thread):
 
             kin = self.total_kinetic_energy()
             tot = pot + kin
-            print '%f       %.6e             %.6e            %.6e' %(t_step,tot,kin,pot)
+            print ('%f       %.6e             %.6e            %.6e' %(t_step,tot,kin,pot))
 
             ctypes_arrays = [np.ctypeslib.as_ctypes(array) for array in self.atoms]
             pointer_ar = (ctypes.POINTER(ctypes.c_double) * self.total_molecules)(*ctypes_arrays)
@@ -92,13 +92,13 @@ class Program(Thread):
 
 
             xc = ctypes.CDLL("./libfoo.so")
-            xc.updateCoordinates(ctypes.c_int(self.total_molecules),pointer_ar,ctypes.c_float(self.tstep),pointer_ar1,pointer_ar2)
+            xc.updateCoordinates_(ctypes.c_int(self.total_molecules),pointer_ar,ctypes.c_float(self.tstep),pointer_ar1,pointer_ar2)
 
 
             ji+=1
             t_step+=self.tstep
             if (ji>=int(iter)):
-                print time.time()-start
+                print (time.time()-start)
                 stopFlag.set()
 
 

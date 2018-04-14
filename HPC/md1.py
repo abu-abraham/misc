@@ -1,3 +1,13 @@
+# Name: Abu Abraham   
+# Student Number: u6325322
+# Course: COMP6464
+# Assignment Number: 1
+# Name of this file:md1.py
+# I declare that the material I am submitting in this file is entirely my own work. I have not
+# collaborated with anyone to produce it, nor have I copied it, in part or in full, from work
+# produced by someone else. I have not given access to this material to any other student in this
+# course.
+
 from __future__ import division
 import sys
 import numpy as np

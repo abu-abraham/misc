@@ -1,9 +1,18 @@
+# Name: Abu Abraham   
+# Student Number: u6325322
+# Course: COMP6464
+# Assignment Number: 1
+# Name of this file:md1.py
+# I declare that the material I am submitting in this file is entirely my own work. I have not
+# collaborated with anyone to produce it, nor have I copied it, in part or in full, from work
+# produced by someone else. I have not given access to this material to any other student in this
+# course.
+
 from __future__ import division
 import sys
 import numpy as np
 import math
 from threading import Timer,Thread,Event
-#from vpython import *
 
 
 class Utils:
@@ -31,16 +40,8 @@ class Program(Thread):
         self.velocity = []
         self.acceleration = [] 
         R = float(R)
-        thk = 0.1
-        mid_point = R/2
-        end_point = R
-        start_point = 0.0
-        # box(pos=vector(mid_point, mid_point, start_point), length=R, height=R, width=thk, color = vector(0.7,0.7,0.7)) 
-        # box(pos=vector(mid_point, start_point, mid_point), length=R, height=thk, width=R, color = vector(0.7,0.7,0.7)) 
-        # box(pos=vector(mid_point, end_point, mid_point), length=R, height=thk, width=R, color = vector(0.7,0.7,0.7)) 
-        # box(pos=vector(start_point, mid_point, mid_point), length=thk, height=R, width=R, color = vector(0.7,0.7,0.7)) 
-        # box(pos=vector(end_point, mid_point, mid_point), length=thk, height=R, width=R, color = vector(0.7,0.7,0.7)) 
-        
+
+    #Function to print attributes
     def print_attributes(self):
         print ("Dimension of cube: "+str(N))
         print ("Total no of atoms: "+str(self.total_molecules))
@@ -50,6 +51,7 @@ class Program(Thread):
         print ("========================================================================================")
         
 
+    #Function to define initial positions of atoms
     def define_initial_positions(self):
         padding  = int(R)/(int(N)*2)
         dimensionality_factor = int(R)/int(N)
@@ -60,9 +62,8 @@ class Program(Thread):
                 for k in range(0,N):
                     k_pos = (k*dimensionality_factor)+padding
                     self.atoms.append([i_pos,j_pos,k_pos])
-                    #self.vpythonAtoms.append(sphere(pos=vector(i_pos,j_pos,k_pos),radius=.2,color=color.blue))
 
-
+    #Function to compute potential for each atom. 
     def find_potential(self,node,index):
         isum = 0
         for i,item in enumerate(self.atoms):
@@ -72,7 +73,7 @@ class Program(Thread):
         return isum
 
     
-
+    #Function to get PE of the system
     def get_potential_energy(self):
         sum = 0
         for index,node in enumerate(self.atoms):
@@ -80,11 +81,13 @@ class Program(Thread):
             sum = sum+s
         return sum
 
+    #Initializing velocity and accelearation lists
     def initialize_lists(self):
         for _ in range(0,self.total_molecules):
             self.acceleration.append([0,0,0])
             self.velocity.append([0,0,0])
-
+    
+    #Finding force coordinates
     def force_cordinates(self,node):
         rij = 0
         Fx = 0
@@ -99,11 +102,9 @@ class Program(Thread):
                 Fz+=const_quantity*(node[2]-item[2])
         return Fx,Fy,Fz
 
-    def show_in_vpython(self):
-        for i,atom in enumerate(self.atoms):
-            self.vpythonAtoms[i].pos=vector(atom[0],atom[1],atom[2])
 
-
+    #Update coordinates with the formulas given
+    #called in each time-step
     def update_coordinates(self):
         X = []
         for _ in range(0,self.total_molecules):
@@ -119,9 +120,10 @@ class Program(Thread):
             self.velocity[i][2] = self.velocity[i][2] + self.tstep*(self.acceleration[i][2]+new_acceleration[2])/2
             self.acceleration[i] = new_acceleration
         self.atoms = X
-        #self.show_in_vpython()
 
-    def update_coordinates_2(self):
+    #Update coordinates without considering the old accelearation 
+    #called in each time-step
+    def update_coordinates_(self):
         X = []
         for _ in range(0,self.total_molecules):
             X.append([0,0,0])
@@ -136,7 +138,6 @@ class Program(Thread):
             self.velocity[i][2] = self.velocity[i][2] + self.tstep*(new_acceleration[2])
             self.acceleration[i] = new_acceleration
         self.atoms = X
-        #self.show_in_vpython()
         
 
     def total_kinetic_energy(self):
@@ -159,7 +160,7 @@ class Program(Thread):
             print ('%f       %.6e             %.6e            %.6e' %(t_step,tot,kin,pot))       
             ji+=1
             t_step+=self.tstep
-            self.update_coordinates_2()
+            self.update_coordinates_()
             if (ji>=int(iter)):
                 stopFlag.set()
 
