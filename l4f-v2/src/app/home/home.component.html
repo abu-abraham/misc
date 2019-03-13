@@ -1,0 +1,116 @@
+<app-toolbar></app-toolbar>
+
+<table style="width: 70%; margin:auto; margin-top: 5%; font-family: Arial, Helvetica, sans-serif;" *ngIf="innerWidth>500">
+        <tr>
+                <mat-card class="example-card">
+
+                        <mat-card-header>
+                                <mat-card-title style="font-size: 1.6em; font-weight: bold;">Hello {{userName}}!</mat-card-title>
+                              </mat-card-header>
+                        <mat-card-content style= "margin-left:15px; font-size: 1.2em">
+                                <p>
+                                        Welcome to "Logic for Fun". If this is your first visit, you should start by reading the opening pages of the guide. This explains how to encode problems, how to run the solver and many details of the language for expressing all this.
+                                        If you have been here before and already done your homework, you should go straight to the puzzles and start solving!
+                                        
+                                    </p>
+                                    <p>
+                                        Direct access to the solver is provided via the green button above, in case you want to type in your own puzzles rather than reading them from the puzzle pages.
+                                        
+                                        The solver and these pages were written by John Slaney to whom comments, complaints, reports of difficulties and offers of large sums of money should be addressed.
+                                        
+                                    </p>
+                                    <p>
+                                        The software is reasonably idiot-proof. However, like all programs of similar size and complexity, it probably still contains the odd bug. If you are lucky enough to find one, feel free to report it.
+                                    </p>
+                        </mat-card-content>
+                      </mat-card>
+           
+            </tr>
+    </table>
+
+    
+<table style="width: 70%; margin:auto; margin-top: 5%"  *ngIf="innerWidth>500">
+    <tr >
+            <td style="width:25%">
+                    <mat-card style= "height:250px">
+    
+                            <mat-card-content style="font-size: 1.6em; font-weight: bold; margin-top: 20%; margin-left: 25%;">
+                                <span style="margin:auto;">
+                                    <img src="assets/images/class.jpg" alt="Bookmark"> 
+                            </span>
+                            <p>
+                               Class: 2019
+                            </p>
+                            </mat-card-content>
+                          </mat-card>
+            </td>
+        <td >
+                <mat-card style= "height:250px; margin-left:10% ">
+
+                        <mat-card-header>
+                                <mat-card-title style="font-size: 1.6em; font-weight: bold;">Pick-up where you left off</mat-card-title>
+                              </mat-card-header>
+                        <mat-card-content>
+                                <mat-select  style="margin-top:10%;" placeholder="Saved solutions">
+                                        <mat-option *ngFor="let food of foods" [value]="food.value">
+                                          {{food.viewValue}}
+                                        </mat-option>
+                                      </mat-select>
+                                      
+                        </mat-card-content>
+
+                        <mat-card-actions  align="end">
+                                <div fxFlex></div>
+                                <button mat-raised-button style="background-color: #424242; color:white;">Load</button>
+                        </mat-card-actions>
+                      </mat-card>
+        </td>
+        <td *ngIf="innerWidth>500">
+                <div style="margin-left:10%">
+                                <app-feedback></app-feedback></div>
+               
+        </td>
+    </tr>
+</table>
+
+<table style="width: 70%; margin:auto; margin-top: 15%"  *ngIf="innerWidth<500">
+              
+                       
+                    <tr >
+                            <mat-card style= "height:250px; width:220px;">
+            
+                                    <mat-card-header>
+                                            <mat-card-title style="font-size: 1.6em; font-weight: bold;">Pick-up where you left off</mat-card-title>
+                                          </mat-card-header>
+                                    <mat-card-content>
+                                            <mat-select  style="margin-top:10%;" placeholder="Saved solutions">
+                                                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                                                      {{food.viewValue}}
+                                                    </mat-option>
+                                                  </mat-select>
+                                                  
+                                    </mat-card-content>
+            
+                                    <mat-card-actions  align="end">
+                                            <div fxFlex></div>
+                                            <button mat-raised-button style="background-color: #424242; color:white;">Load</button>
+                                    </mat-card-actions>
+                                  </mat-card>
+                    </tr>
+
+                    <tr >
+                                <mat-card style= "height:250px; width:220px;">
+                
+                                        <mat-card-content style="font-size: 1.6em; font-weight: bold; margin-top: 20%; margin-left: 25%;">
+                                            <span style="margin:auto;">
+                                                <img src="assets/images/class.jpg" alt="Bookmark"> 
+                                        </span>
+                                        <p>
+                                           Class: 2019
+                                        </p>
+                                        </mat-card-content>
+                                      </mat-card>
+                </tr>
+                   
+            </table>
+<app-footer></app-footer>

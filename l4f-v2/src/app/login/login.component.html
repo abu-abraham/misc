@@ -1,0 +1,41 @@
+<div class = "fullPage">
+<header class="docs-header-background"
+        [class.is-next-version]="isNextVersion">
+  <div class="docs-header-section">
+    <div class="docs-header-headline">
+      <h1 class="mat-h1">
+        <span >LOGIC</span>
+        <span style="color:black" >4</span>
+        <span >FUN</span>
+      </h1>
+      <div style="visibility: hidden; margin:25%; margin-top:3%; font-weight: 100; font-size: .8em; word-break: break-all; hyphens:auto;  "> 
+        <p>Welcome to "Logic for Fun". If this is your first visit, you should start by reading the opening pages of the guide. This explains how to encode problems, how to run the solver and many details of the language for expressing all this.If you have been here before and already done your homework, you should go straight to the puzzles and start solving!
+      </p>
+      <p>  Direct access to the solver is provided via the green button above, in case you want to type in your own puzzles rather than reading them from the puzzle pages.
+        </p>
+        <p>The solver and these pages were written by John Slaney to whom comments, complaints, reports of difficulties and offers of large sums of money should be addressed.
+      
+      </p>  </div>
+    </div>
+  </div>
+</header>
+<div class="bottom">
+    <table style = "margin:auto;">
+        <tr>
+          <td>
+              <a mat-raised-button class= "login_button">
+                <img src="assets/images/google.jpg" alt="Bookmark">
+                Sign in with Google</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <a mat-raised-button class="login_button"  (click)="onLogin()">
+                <img src="assets/images/msft.jpg" alt="Bookmark">
+                Sign in with Office365</a>
+          </td>
+        </tr>
+    </table>
+    <div class="desc">*Australian National University students please use your office365 account to sign in!</div>
+</div>
+</div>

@@ -1,0 +1,61 @@
+<app-toolbar></app-toolbar>
+  <mat-card class="settings">
+      <mat-card-header>
+        <mat-card-title>Solver Settings</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        </mat-card-content>
+        <form>
+            <mat-form-field>
+              <mat-select placeholder="Number of solutions" [(ngModel)]="selected_no_of_solutions" name="solution">
+                <mat-option *ngFor="let solution of options_4_no_of_solutions" [value]="solution">
+                  {{solution}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p></p>
+            <mat-form-field>
+              <mat-select placeholder="Time limit" [(ngModel)]="selected_time_limit" name="time">
+                <mat-option *ngFor="let time of options_4_time_limit" [value]="time">
+                  {{time}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p></p>
+            <mat-form-field>
+              <mat-select placeholder="Pre-test limit" [(ngModel)]="selected_pretest_limit" name="pretest">
+                <mat-option *ngFor="let pretest of options_4_pretest_limit" [value]="pretest">
+                  {{pretest}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p></p>
+            <mat-form-field>
+              <mat-select placeholder="Print finder job" [(ngModel)]="selected_print_finder_job" name="print">
+                <mat-option *ngFor="let print of options_4_print_finder_job" [value]="print">
+                  {{print}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p></p>
+            <mat-form-field>
+              <mat-select placeholder="Print solutions" [(ngModel)]="selected_print_solutions" name="print_sol">
+                <mat-option *ngFor="let print_sol of options_4_print_solutions" [value]="print_sol">
+                  {{print_sol}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p></p>
+            <mat-form-field>
+              <mat-select placeholder="Print statistics" [(ngModel)]="selected_print_statistics" name="print_stat">
+                <mat-option *ngFor="let print_stat of options_4_print_statistics" [value]="print_stat">
+                  {{print_stat}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <p></p>
+            <button mat-raised-button color="primary" (click)="onSave()">Save</button>         
+          </form>
+        </mat-card>
+
+        

@@ -1,0 +1,59 @@
+<div>
+<mat-accordion multi="true">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <mat-expansion-panel  class = "panel"  [expanded]="true" >
+      <mat-expansion-panel-header class ="heading">
+        Sorts
+      </mat-expansion-panel-header>
+      <div id="sort_editor" class = "editor" contenteditable="true"></div>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel class = "panel"  [expanded]="true" >
+      <mat-expansion-panel-header class ="heading">
+        Vocabulary
+      </mat-expansion-panel-header>
+  
+      <div id="vocab_editor" class = "editor" contenteditable="true"></div>
+  
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel class = "panel"  [expanded]="true">
+        <mat-expansion-panel-header class ="heading">
+          Constraints
+        </mat-expansion-panel-header>
+    
+        <div id="constraint_editor" class = "editor" contenteditable="true"></div>
+        <div class="example-button-row">
+          <span>Insert any locgical symbols</span>
+            <button mat-icon-button>
+              <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+            </button>
+            <button mat-icon-button color="primary">
+              <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+            </button>
+            <button mat-icon-button color="primary">
+              <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+            </button>
+            <button mat-icon-button color="primary">
+              <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+            </button>
+           
+          </div>
+    
+      </mat-expansion-panel>
+  </mat-accordion>
+  <table style="float: right; margin-right:5%">
+  <tr class="submission_buttons">
+    <td><button mat-raised-button >  <img src="assets/images/msft.jpg" >{{save_solution}}</button></td>
+    <td><button mat-raised-button> <img src="assets/images/msft.jpg" > {{submit_to_class}}</button></td>
+    <td><button mat-raised-button color="accent"> <img src="assets/images/msft.jpg" > {{check_syntax}}</button></td>
+    <td><button mat-raised-button color="green"> <img src="assets/images/msft.jpg" (click)="onSolve()"> {{solve}}</button></td>     
+      
+   </tr>
+  </table>
+
+    <div class ="output">
+        
+    </div>
+</div>
